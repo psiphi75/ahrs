@@ -1,0 +1,110 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'publish' ]
+2 info using npm@1.4.21
+3 info using node@v4.3.1
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url Url {
+7 verbose parsed url   protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /home/simon/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/home/simon/.npm/ahrs/0.0.2/package.tgz', '.' ]
+11 verbose tarball /home/simon/.npm/ahrs/0.0.2/package.tgz
+12 verbose folder .
+13 info prepublish ahrs@0.0.2
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /home/simon/.npm/1f1177db-tar.lock
+16 silly lockFile 7b83d261-simon-npm-ahrs-0-0-2-package-tgz tar:///home/simon/.npm/ahrs/0.0.2/package.tgz
+17 verbose lock tar:///home/simon/.npm/ahrs/0.0.2/package.tgz /home/simon/.npm/7b83d261-simon-npm-ahrs-0-0-2-package-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 7b83d261-simon-npm-ahrs-0-0-2-package-tgz tar:///home/simon/.npm/ahrs/0.0.2/package.tgz
+21 silly lockFile 7b83d261-simon-npm-ahrs-0-0-2-package-tgz tar:///home/simon/.npm/ahrs/0.0.2/package.tgz
+22 silly lockFile 05ba29af-ome-simon-npm-ahrs-0-0-2-package /home/simon/.npm/ahrs/0.0.2/package
+23 verbose lock /home/simon/.npm/ahrs/0.0.2/package /home/simon/.npm/05ba29af-ome-simon-npm-ahrs-0-0-2-package.lock
+24 silly lockFile 05ba29af-ome-simon-npm-ahrs-0-0-2-package /home/simon/.npm/ahrs/0.0.2/package
+25 silly lockFile 05ba29af-ome-simon-npm-ahrs-0-0-2-package /home/simon/.npm/ahrs/0.0.2/package
+26 silly lockFile 3a52ce78- .
+27 silly lockFile 3a52ce78- .
+28 silly publish { name: 'ahrs',
+28 silly publish   version: '0.0.2',
+28 silly publish   description: 'AHRS (Attitude Heading Reference Systems) calculation for JavaScript',
+28 silly publish   main: 'index.js',
+28 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+28 silly publish   repository: { type: 'git', url: 'https://github.com/psiphi75/ahrs.git' },
+28 silly publish   keywords:
+28 silly publish    [ 'AHRS',
+28 silly publish      'IMU',
+28 silly publish      'Mahony',
+28 silly publish      'Madgwick',
+28 silly publish      'Kalman',
+28 silly publish      'filter',
+28 silly publish      'compass',
+28 silly publish      'accelerometer',
+28 silly publish      'gyroscope',
+28 silly publish      'gyro',
+28 silly publish      'quaternion' ],
+28 silly publish   author: { name: 'Simon M. Werner' },
+28 silly publish   license: 'APSL-2.0',
+28 silly publish   bugs: { url: 'https://github.com/psiphi75/ahrs/issues' },
+28 silly publish   readme: '# AHRS\n\nAHRS (Attitude Heading Reference Systems) calculation for JavaScript.  This will calculate the attitude and heading for a device with all of the following sensors: compass, gyroscope and accelerometer.  The Madgwick or Mahony algorithms can be used to filter data in real time from these sensors.\n\n## Usage:\n\n```javascript\nvar AHRS = require(\'./index\');\nvar madgwick = new AHRS({ sampleInterval: 20, algorithm: \'Madgwick\' });\n\nmadgwick.update(gyro.x, gyro.y, gyro.z, accel.x, accel.y, accel.z, compass.x, compass.y, compass.z);\nconsole.log(madgwick.toVector());\n\n// Output will be something like\n//{ angle: 4.721762925242644,\n//  x: 0.1813927666973246,\n//  y: 0.08766109912082491,\n//  z: -0.9794958886543724 }\n```\n\n## TODO:\n\n-   Currently the quaternion is not initialised, this means there may be one to two seconds before the correct attitude is obtained.\n-   Add option to initialise against compass or accelerometer.\n',
+28 silly publish   readmeFilename: 'README.md',
+28 silly publish   gitHead: 'd72abbdd90f63609d2edef4c52b240c2cc0f0a4b',
+28 silly publish   _id: 'ahrs@0.0.2',
+28 silly publish   _shasum: '4b4126ef9524b94880e2867a45a8906c59b6fb2e',
+28 silly publish   _from: '.' }
+29 verbose request where is /ahrs
+30 verbose request registry https://registry.npmjs.org/
+31 verbose request id 7ce894a452d8efaa
+32 verbose url raw /ahrs
+33 verbose url resolving [ 'https://registry.npmjs.org/', './ahrs' ]
+34 verbose url resolved https://registry.npmjs.org/ahrs
+35 verbose request where is https://registry.npmjs.org/ahrs
+36 info trying registry request attempt 1 at 12:21:14 PM
+37 http PUT https://registry.npmjs.org/ahrs
+38 http 403 https://registry.npmjs.org/ahrs
+39 verbose headers { 'content-type': 'application/json',
+39 verbose headers   'cache-control': 'max-age=300',
+39 verbose headers   'content-length': '95',
+39 verbose headers   'accept-ranges': 'bytes',
+39 verbose headers   date: 'Thu, 05 May 2016 00:21:24 GMT',
+39 verbose headers   via: '1.1 varnish',
+39 verbose headers   connection: 'close',
+39 verbose headers   'x-served-by': 'cache-akl6421-AKL',
+39 verbose headers   'x-cache': 'MISS',
+39 verbose headers   'x-cache-hits': '0',
+39 verbose headers   'x-timer': 'S1462407675.174585,VS0,VE9469',
+39 verbose headers   vary: 'Accept-Encoding' }
+40 error publish Failed PUT 403
+41 error Error: "You cannot publish over the previously published version 0.0.2." : ahrs
+41 error     at RegClient.<anonymous> (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:300:14)
+41 error     at Request._callback (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:238:65)
+41 error     at Request.self.callback (/usr/lib/nodejs/request/index.js:148:22)
+41 error     at emitTwo (events.js:87:13)
+41 error     at Request.emit (events.js:172:7)
+41 error     at Request.<anonymous> (/usr/lib/nodejs/request/index.js:896:14)
+41 error     at emitOne (events.js:82:20)
+41 error     at Request.emit (events.js:169:7)
+41 error     at IncomingMessage.<anonymous> (/usr/lib/nodejs/request/index.js:847:12)
+41 error     at emitNone (events.js:72:20)
+42 error If you need help, you may report this *entire* log,
+42 error including the npm and node versions, at:
+42 error     <http://github.com/npm/npm/issues>
+43 error System Linux 4.5.0-1-amd64
+44 error command "/usr/bin/nodejs" "/usr/bin/npm" "publish"
+45 error cwd /home/simon/Projects/github/ahrs
+46 error node -v v4.3.1
+47 error npm -v 1.4.21
+48 verbose exit [ 1, true ]
