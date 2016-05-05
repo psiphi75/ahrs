@@ -23,31 +23,47 @@ module.exports = function Madgwick(sampleInterval) {
     //---------------------------------------------------------------------------------------------------
     // Definitions
     var sampleFreq = 1000 / sampleInterval;  // sample frequency in Hz
-    var betaDef = 0.25;   // 2 * proportional gain
+    var beta = 0.25;   // 2 * proportional gain
 
     //---------------------------------------------------------------------------------------------------
     // Variable definitions
-    var beta = betaDef;                         // 2 * proportional gain (Kp)
     var q0 = 1.0, q1 = 0.0, q2 = 0.0, q3 = 0.0; // quaternion of sensor frame relative to auxiliary frame
+    var recipSampleFreq = 1.0 / sampleFreq;
 
     return {
 
-        /**
-         * TODO: This function actually does not work at the moment.
-         * Initalise the quaternion with the compass or accelerometer.  Based on
-         * calculations from here: http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-         * @param  {number} amx x-value
-         * @param  {number} amy y-value
-         * @param  {number} amz z-value
-         */
-        initialise: function(amx, amy, amz) {
-            var angle = 0;  // TODO: Need to calculate the angle here.
-            var sinAngle = Math.sin(angle / 2);
-            q0 = Math.cos(angle / 2);
-            q1 = amx * sinAngle;
-            q2 = amy * sinAngle;
-            q3 = amz * sinAngle;
-        },
+        // /**
+        //  * Initalise the quaternion with the compass and accelerometer.  Based on
+        //  * calculations from here: http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
+        //  * @param  {number} ax accelerometer x-value
+        //  * @param  {number} ay accelerometer y-value
+        //  * @param  {number} az accelerometer z-value
+        //  * @param  {number} cx compass x-value
+        //  * @param  {number} cy compass y-value
+        //  */
+        // initialise: function(ax, ay, az, cx, cy) {
+        //
+        //     // Normalise accelerometer measurement
+        //     var recipNorm = Math.pow(ax * ax + ay * ay + az * az, -0.5);
+        //     ax *= recipNorm;
+        //     ay *= recipNorm;
+        //     az *= recipNorm;
+        //
+        //     // Create the quaternion
+        //     var angle = Math.atan2(cx, cy);
+        //     var sinAngle = Math.sin(angle / 2);
+        //     q0 = Math.cos(angle / 2);
+        //     q1 = ax * sinAngle;
+        //     q2 = ay * sinAngle;
+        //     q3 = az * sinAngle;
+        //
+        //     // Normalise quaternion
+        //     recipNorm = Math.pow(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3, -0.5);
+        //     q0 *= recipNorm;
+        //     q1 *= recipNorm;
+        //     q2 *= recipNorm;
+        //     q3 *= recipNorm;
+        // },
 
         update: madgwickAHRSupdate,
 
@@ -140,10 +156,10 @@ module.exports = function Madgwick(sampleInterval) {
         }
 
         // Integrate rate of change of quaternion to yield quaternion
-        q0 += qDot1 * (1.0 / sampleFreq);
-        q1 += qDot2 * (1.0 / sampleFreq);
-        q2 += qDot3 * (1.0 / sampleFreq);
-        q3 += qDot4 * (1.0 / sampleFreq);
+        q0 += qDot1 * recipSampleFreq;
+        q1 += qDot2 * recipSampleFreq;
+        q2 += qDot3 * recipSampleFreq;
+        q3 += qDot4 * recipSampleFreq;
 
         // Normalise quaternion
         recipNorm = Math.pow(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3, -0.5);
@@ -240,10 +256,10 @@ module.exports = function Madgwick(sampleInterval) {
         }
 
         // Integrate rate of change of quaternion to yield quaternion
-        q0 += qDot1 * (1.0 / sampleFreq);
-        q1 += qDot2 * (1.0 / sampleFreq);
-        q2 += qDot3 * (1.0 / sampleFreq);
-        q3 += qDot4 * (1.0 / sampleFreq);
+        q0 += qDot1 * recipSampleFreq;
+        q1 += qDot2 * recipSampleFreq;
+        q2 += qDot3 * recipSampleFreq;
+        q3 += qDot4 * recipSampleFreq;
 
         // Normalise quaternion
         recipNorm = Math.pow(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3, -0.5);

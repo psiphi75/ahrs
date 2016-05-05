@@ -4,11 +4,11 @@ AHRS (Attitude Heading Reference Systems) calculation for JavaScript.  This will
 
 ## Usage:
 
-```JavaScript
+```javascript
 var AHRS = require('./index');
 var madgwick = new AHRS({ sampleInterval: 20, algorithm: 'Madgwick' });
 
-madgwick.update(d.gyro.x, d.gyro.y, d.gyro.z, d.accel.x, d.accel.y, d.accel.z, d.compass.x, d.compass.y, d.compass.z);
+madgwick.update(gyro.x, gyro.y, gyro.z, accel.x, accel.y, accel.z, compass.x, compass.y, compass.z);
 console.log(madgwick.toVector());
 
 // Output will be something like
@@ -16,9 +16,9 @@ console.log(madgwick.toVector());
 //  x: 0.1813927666973246,
 //  y: 0.08766109912082491,
 //  z: -0.9794958886543724 }
-
 ```
 
 ## TODO:
- - Currently the quaternion is not initialised, this means there may be one to two seconds before the correct attitude is obtained.
- - Add option to initialise against compass or accelerometer.
+
+-   Currently the quaternion is not initialised, this means there may be one to two seconds before the correct attitude is obtained.
+-   Add option to initialise against compass or accelerometer.
