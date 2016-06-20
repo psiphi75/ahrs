@@ -23,7 +23,7 @@ module.exports = function Madgwick(sampleInterval) {
     //---------------------------------------------------------------------------------------------------
     // Definitions
     var sampleFreq = 1000 / sampleInterval;  // sample frequency in Hz
-    var beta = 0.25;   // 2 * proportional gain
+    var beta = 0.8;   // 2 * proportional gain - lower numbers are smoother, but take longer to get to correct attitude.
 
     //---------------------------------------------------------------------------------------------------
     // Variable definitions
@@ -172,7 +172,8 @@ module.exports = function Madgwick(sampleInterval) {
     //---------------------------------------------------------------------------------------------------
     // AHRS algorithm update
 
-    function madgwickAHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz) {
+    function madgwickAHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz, deltaTimeSec) {
+        recipSampleFreq = deltaTimeSec || recipSampleFreq;
         var recipNorm;
         var s0, s1, s2, s3;
         var qDot1, qDot2, qDot3, qDot4;

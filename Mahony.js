@@ -28,6 +28,7 @@ module.exports = function Mahony(sampleInterval) {
     //var twoKiDef   = 2.0 * 0.0;         // 2 * integral gain
     var twoKpDef = 10.0 * 0.5;         // 2 * proportional gain
     var twoKiDef = 10.0 * 0.0;         // 2 * integral gain
+    var recipSampleFreq = 1 / sampleFreq;
 
     //---------------------------------------------------------------------------------------------------
     // Variable definitions
@@ -120,9 +121,9 @@ module.exports = function Mahony(sampleInterval) {
 
             // Compute and apply integral feedback if enabled
             if (twoKi > 0.0) {
-                integralFBx += twoKi * halfex * (1.0 / sampleFreq); // integral error scaled by Ki
-                integralFBy += twoKi * halfey * (1.0 / sampleFreq);
-                integralFBz += twoKi * halfez * (1.0 / sampleFreq);
+                integralFBx += twoKi * halfex * recipSampleFreq; // integral error scaled by Ki
+                integralFBy += twoKi * halfey * recipSampleFreq;
+                integralFBz += twoKi * halfez * recipSampleFreq;
                 gx += integralFBx; // apply integral feedback
                 gy += integralFBy;
                 gz += integralFBz;
@@ -138,9 +139,9 @@ module.exports = function Mahony(sampleInterval) {
         }
 
         // Integrate rate of change of quaternion
-        gx *= (0.5 * (1.0 / sampleFreq));         // pre-multiply common factors
-        gy *= (0.5 * (1.0 / sampleFreq));
-        gz *= (0.5 * (1.0 / sampleFreq));
+        gx *= (0.5 * recipSampleFreq);         // pre-multiply common factors
+        gy *= (0.5 * recipSampleFreq);
+        gz *= (0.5 * recipSampleFreq);
         qa = q0;
         qb = q1;
         qc = q2;
@@ -162,8 +163,8 @@ module.exports = function Mahony(sampleInterval) {
     // AHRS algorithm update
     //
 
-    function mahonyAHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz) {
-
+    function mahonyAHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz, deltaTimeSec) {
+        recipSampleFreq = deltaTimeSec | recipSampleFreq;
         var recipNorm;
         var q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
         var hx, hy, bx, bz;
@@ -225,9 +226,9 @@ module.exports = function Mahony(sampleInterval) {
 
             // Compute and apply integral feedback if enabled
             if (twoKi > 0.0) {
-                integralFBx += twoKi * halfex * (1.0 / sampleFreq);  // integral error scaled by Ki
-                integralFBy += twoKi * halfey * (1.0 / sampleFreq);
-                integralFBz += twoKi * halfez * (1.0 / sampleFreq);
+                integralFBx += twoKi * halfex * recipSampleFreq;  // integral error scaled by Ki
+                integralFBy += twoKi * halfey * recipSampleFreq;
+                integralFBz += twoKi * halfez * recipSampleFreq;
                 gx += integralFBx;  // apply integral feedback
                 gy += integralFBy;
                 gz += integralFBz;
@@ -244,9 +245,9 @@ module.exports = function Mahony(sampleInterval) {
         }
 
         // Integrate rate of change of quaternion
-        gx *= (0.5 * (1.0 / sampleFreq));    // pre-multiply common factors
-        gy *= (0.5 * (1.0 / sampleFreq));
-        gz *= (0.5 * (1.0 / sampleFreq));
+        gx *= (0.5 * recipSampleFreq);    // pre-multiply common factors
+        gy *= (0.5 * recipSampleFreq);
+        gz *= (0.5 * recipSampleFreq);
         qa = q0;
         qb = q1;
         qc = q2;

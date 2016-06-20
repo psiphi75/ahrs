@@ -5,7 +5,7 @@ AHRS (Attitude Heading Reference Systems) calculation for JavaScript.  This will
 ## Usage:
 
 ```javascript
-var AHRS = require('./index');
+var AHRS = require('ahrs');
 var madgwick = new AHRS({ sampleInterval: 20, algorithm: 'Madgwick' });
 
 madgwick.update(gyro.x, gyro.y, gyro.z, accel.x, accel.y, accel.z, compass.x, compass.y, compass.z);
