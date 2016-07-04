@@ -18,12 +18,12 @@
  * The Madgwick algorithm.  See: http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/
  * @param {number} sampleInterval The sample interval in milliseconds.
  */
-module.exports = function Madgwick(sampleInterval) {
+module.exports = function Madgwick(sampleInterval, beta) {
 
     //---------------------------------------------------------------------------------------------------
     // Definitions
     var sampleFreq = 1000 / sampleInterval;  // sample frequency in Hz
-    var beta = 0.8;   // 2 * proportional gain - lower numbers are smoother, but take longer to get to correct attitude.
+    beta = beta || 1.0;   // 2 * proportional gain - lower numbers are smoother, but take longer to get to correct attitude.
 
     //---------------------------------------------------------------------------------------------------
     // Variable definitions
@@ -31,39 +31,6 @@ module.exports = function Madgwick(sampleInterval) {
     var recipSampleFreq = 1.0 / sampleFreq;
 
     return {
-
-        // /**
-        //  * Initalise the quaternion with the compass and accelerometer.  Based on
-        //  * calculations from here: http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-        //  * @param  {number} ax accelerometer x-value
-        //  * @param  {number} ay accelerometer y-value
-        //  * @param  {number} az accelerometer z-value
-        //  * @param  {number} cx compass x-value
-        //  * @param  {number} cy compass y-value
-        //  */
-        // initialise: function(ax, ay, az, cx, cy) {
-        //
-        //     // Normalise accelerometer measurement
-        //     var recipNorm = Math.pow(ax * ax + ay * ay + az * az, -0.5);
-        //     ax *= recipNorm;
-        //     ay *= recipNorm;
-        //     az *= recipNorm;
-        //
-        //     // Create the quaternion
-        //     var angle = Math.atan2(cx, cy);
-        //     var sinAngle = Math.sin(angle / 2);
-        //     q0 = Math.cos(angle / 2);
-        //     q1 = ax * sinAngle;
-        //     q2 = ay * sinAngle;
-        //     q3 = az * sinAngle;
-        //
-        //     // Normalise quaternion
-        //     recipNorm = Math.pow(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3, -0.5);
-        //     q0 *= recipNorm;
-        //     q1 *= recipNorm;
-        //     q2 *= recipNorm;
-        //     q3 *= recipNorm;
-        // },
 
         update: madgwickAHRSupdate,
 
@@ -74,25 +41,7 @@ module.exports = function Madgwick(sampleInterval) {
                 y: q2,
                 z: q3
             };
-        },
-
-        /**
-         * Convert the quaternion to a vector with angle.  Reverse of the code
-         * in the following link: http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-         * @return {object} Normalised vector - {x, y, z, angle}
-         */
-        toVector: function () {
-            var angle = 2 * Math.acos(q0);
-            var sinAngle = Math.sin(angle / 2);
-            return {
-                angle: angle,
-                x: q1 / sinAngle,
-                y: q2 / sinAngle,
-                z: q3 / sinAngle
-            };
         }
-
-
     };
 
 
