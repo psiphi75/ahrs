@@ -68,7 +68,7 @@ AHRS.prototype.toVector = function () {
  * Return an object with the Euler angles {heading, pitch, roll}, in radians.
  *
  * Where:
- *   - heading is from magnetic north, going east (about z-axis).
+ *   - heading is from magnetic north, going west (about z-axis).
  *   - pitch is from vertical, going forward (about y-axis).
  *   - roll is from vertical, going right (about x-axis).
  *
@@ -80,7 +80,7 @@ AHRS.prototype.getEulerAngles = function() {
     var q = this.getQuaternion();
     var ww = q.w * q.w, xx = q.x * q.x, yy = q.y * q.y, zz = q.z * q.z;
     return {
-        heading: -Math.atan2(2 * (q.x * q.y + q.z * q.w), xx - yy - zz + ww),
+        heading: Math.atan2(2 * (q.x * q.y + q.z * q.w), xx - yy - zz + ww),
         pitch: -Math.asin(2 * (q.x * q.z - q.y * q.w)),
         roll: Math.atan2(2 * (q.y * q.z + q.x * q.w), -xx - yy + zz + ww)
     };

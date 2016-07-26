@@ -67,7 +67,7 @@ Convert the quaternion to a vector with angle.
 Return an object with the Euler angles (heading/yaw, pitch, roll), in radians.
 
 *returns:* Object where:
-   - heading is from north, going east (about z-axis).
+   - heading is from north, going west (about z-axis).
    - pitch is from vertical, going forward (about y-axis).
    - roll is from vertical, going right (about x-axis).
 
