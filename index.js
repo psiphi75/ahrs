@@ -74,7 +74,7 @@ AHRS.prototype.toVector = function () {
  *
  * Thanks to:
  *   https://github.com/PenguPilot/PenguPilot/blob/master/autopilot/service/util/math/quat.c#L103
- * @return {object} {heading, pitch, roll}
+ * @return {object} {heading, pitch, roll} in radians
  */
 AHRS.prototype.getEulerAngles = function() {
     var q = this.getQuaternion();
