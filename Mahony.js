@@ -23,7 +23,7 @@ module.exports = function Mahony(sampleInterval, options) {
     // Definitions
 
     options = options || {};
-    var kp = options.kp || 0.5;
+    var kp = options.kp || 1.0;
     var ki = options.ki || 0.0;
 
     var sampleFreq = 1000 / sampleInterval;  // sample frequency in Hz
