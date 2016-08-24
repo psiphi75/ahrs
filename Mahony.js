@@ -24,10 +24,8 @@ module.exports = function Mahony(sampleInterval) {
     // Definitions
 
     var sampleFreq = 1000 / sampleInterval;  // sample frequency in Hz
-    //var twoKpDef   = 2.0 * 0.5;         // 2 * proportional gain
-    //var twoKiDef   = 2.0 * 0.0;         // 2 * integral gain
-    var twoKpDef = 10.0 * 0.5;         // 2 * proportional gain
-    var twoKiDef = 10.0 * 0.0;         // 2 * integral gain
+    var twoKpDef = 2.0 * 0.5;                // 2 * proportional gain
+    var twoKiDef = 2.0 * 0.0;                // 2 * integral gain
     var recipSampleFreq = 1 / sampleFreq;
 
     //---------------------------------------------------------------------------------------------------
