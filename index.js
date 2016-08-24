@@ -36,7 +36,7 @@ function AHRS(options) {
             throw new Error('AHRS(): Algorithm not valid: ', algorithmName);
     }
 
-    var algorithmFn = new (require('./' + algorithmName))(sampleInterval, options.beta);
+    var algorithmFn = new (require('./' + algorithmName))(sampleInterval, options);
 
     // Copy all properties accross
     for (var prop in algorithmFn) {

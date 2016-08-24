@@ -18,12 +18,14 @@
  * The Madgwick algorithm.  See: http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/
  * @param {number} sampleInterval The sample interval in milliseconds.
  */
-module.exports = function Madgwick(sampleInterval, beta) {
+module.exports = function Madgwick(sampleInterval, options) {
 
     //---------------------------------------------------------------------------------------------------
     // Definitions
+
+    options = options || {};
     var sampleFreq = 1000 / sampleInterval;  // sample frequency in Hz
-    beta = beta || 1.0;   // 2 * proportional gain - lower numbers are smoother, but take longer to get to correct attitude.
+    var beta = options.beta || 1.0;   // 2 * proportional gain - lower numbers are smoother, but take longer to get to correct attitude.
 
     //---------------------------------------------------------------------------------------------------
     // Variable definitions
@@ -31,9 +33,7 @@ module.exports = function Madgwick(sampleInterval, beta) {
     var recipSampleFreq = 1.0 / sampleFreq;
 
     return {
-
         update: madgwickAHRSupdate,
-
         getQuaternion: function() {
             return {
                 w: q0,

@@ -23,7 +23,13 @@ var madgwick = new AHRS({
      * smoother estimates, but have higher latency.
      * This only works for the `Madgwick` filter.
      */
-    beta: 0.4
+    beta: 0.4,
+
+    /*
+     * The filter noise values for the `Mahony` filter.
+     */
+    kp: 0.5,
+    ki: 0
 });
 
 madgwick.update(gyro.x, gyro.y, gyro.z, accel.x, accel.y, accel.z, compass.x, compass.y, compass.z);

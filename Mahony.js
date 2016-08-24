@@ -17,15 +17,18 @@
  * The Mahony algorithm.  See: http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/
  * @param {number} sampleInterval The sample interval in milliseconds.
  */
-module.exports = function Mahony(sampleInterval) {
-
+module.exports = function Mahony(sampleInterval, options) {
 
     //---------------------------------------------------------------------------------------------------
     // Definitions
 
+    options = options || {};
+    var kp = options.kp || 0.5;
+    var ki = options.ki || 0.0;
+
     var sampleFreq = 1000 / sampleInterval;  // sample frequency in Hz
-    var twoKpDef = 2.0 * 0.5;                // 2 * proportional gain
-    var twoKiDef = 2.0 * 0.0;                // 2 * integral gain
+    var twoKpDef = 2.0 * kp;                 // 2 * proportional gain
+    var twoKiDef = 2.0 * ki;                 // 2 * integral gain
     var recipSampleFreq = 1 / sampleFreq;
 
     //---------------------------------------------------------------------------------------------------
@@ -38,26 +41,7 @@ module.exports = function Mahony(sampleInterval) {
 
 
     return {
-
-        /**
-         * TODO: This function actually does not work at the moment.
-         * Initalise the quaternion with the compass or accelerometer.  Based on
-         * calculations from here: http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-         * @param  {number} amx x-value
-         * @param  {number} amy y-value
-         * @param  {number} amz z-value
-         */
-        initialise: function(amx, amy, amz) {
-            var angle = 0;  // TODO: Need to calculate the angle here.
-            var sinAngle = Math.sin(angle / 2);
-            q0 = Math.cos(angle / 2);
-            q1 = amx * sinAngle;
-            q2 = amy * sinAngle;
-            q3 = amz * sinAngle;
-        },
-
         update: mahonyAHRSupdate,
-
         getQuaternion: function() {
             return {
                 w: q0,
@@ -65,25 +49,7 @@ module.exports = function Mahony(sampleInterval) {
                 y: q2,
                 z: q3
             };
-        },
-
-        /**
-         * Convert the quaternion to a vector with angle.  Reverse of the code
-         * in the following link: http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-         * @return {object} Normalised vector - {x, y, z, angle}
-         */
-        toVector: function () {
-            var angle = 2 * Math.acos(q0);
-            var sinAngle = Math.sin(angle / 2);
-            return {
-                angle: angle,
-                x: q1 / sinAngle,
-                y: q2 / sinAngle,
-                z: q3 / sinAngle
-            };
         }
-
-
     };
 
     //====================================================================================================
@@ -162,7 +128,7 @@ module.exports = function Mahony(sampleInterval) {
     //
 
     function mahonyAHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz, deltaTimeSec) {
-        recipSampleFreq = deltaTimeSec | recipSampleFreq;
+        recipSampleFreq = deltaTimeSec || recipSampleFreq;
         var recipNorm;
         var q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
         var hx, hy, bx, bz;
