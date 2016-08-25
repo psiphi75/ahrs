@@ -494,15 +494,14 @@ function AHRS(options) {
     var sampleInterval = options.sampleInterval || 20;
     var algorithmName = options.algorithm || 'Madgwick';
 
-    switch (algorithmName) {
-        case 'Mahony':
-        case 'Madgwick':
-            break;
-        default:
-            throw new Error('AHRS(): Algorithm not valid: ', algorithmName);
+    var algorithmFn;
+    if (algorithmName === 'Mahony') {
+        algorithmFn = new (require('./Mahony'))(sampleInterval, options);
+    } else if (algorithmName === 'Madgwick') {
+        algorithmFn = new (require('./Madgwick'))(sampleInterval, options);
+    } else {
+        throw new Error('AHRS(): Algorithm not valid: ', algorithmName);
     }
-
-    var algorithmFn = new (require('./' + algorithmName))(sampleInterval, options);
 
     // Copy all properties accross
     for (var prop in algorithmFn) {
@@ -554,4 +553,4 @@ AHRS.prototype.getEulerAngles = function() {
 
 module.exports = AHRS;
 
-},{}]},{},[]);
+},{"./Madgwick":"./Madgwick","./Mahony":"./Mahony"}]},{},[]);
