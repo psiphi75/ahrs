@@ -54,6 +54,12 @@ Update the AHRS filter with up-to-date, unfiltered values from the gyroscope (gx
 optionally the elapsed time (in seconds) since the last reading.  The magnetometer
 values do not have to be sent through for every update, since the magnetometer typically has lower update rates than the gyro and accelerometer.
 
+*Units*
+
+- gyroscope: radians / s
+- accelerometer: g, where 1 g is 9.81 m/s²
+- magnetometer: unitless, but a relative proportion of the Earth's magnetic field
+
 *returns:* nothing.
 
 ##### getQuaternion()
