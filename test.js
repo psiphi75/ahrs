@@ -32,6 +32,7 @@ var madgwick = new AHRS({
 
 setInterval(function() {
     var d = nextDataPoint();
+    // madgwick.update(d.gyro.x, d.gyro.y, d.gyro.z, d.accel.x, d.accel.y, d.accel.z);
     madgwick.update(d.gyro.x, d.gyro.y, d.gyro.z, d.accel.x, d.accel.y, d.accel.z, d.compass.x, d.compass.y, d.compass.z);
     console.log(madgwick.toVector());
 }, sampleInterval);
