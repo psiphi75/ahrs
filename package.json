@@ -1,10 +1,10 @@
 {
   "name": "ahrs",
-  "version": "1.1.4",
+  "version": "1.1.6",
   "description": "AHRS (Attitude Heading Reference Systems) calculation for JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd test; node test.js",
     "prepublish": "./build.sh"
   },
   "repository": {
@@ -28,5 +28,8 @@
   "license": "APSL-2.0",
   "bugs": {
     "url": "https://github.com/psiphi75/ahrs/issues"
+  },
+  "devDependencies": {
+    "tape": "^4.6.3"
   }
 }

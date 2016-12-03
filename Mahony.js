@@ -136,8 +136,8 @@ module.exports = function Mahony(sampleInterval, options) {
         var halfex, halfey, halfez;
         var qa, qb, qc;
 
-        // Use IMU algorithm if magnetometer measurement invalid (afunctions NaN in magnetometer normalisation)
-        if (mx === undefined || my === undefined || mz === undefined) {
+        // Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
+        if (mx === undefined || my === undefined || mz === undefined || (mx === 0 && my === 0 && mz === 0)) {
             mahonyAHRSupdateIMU(gx, gy, gz, ax, ay, az);
             return;
         }

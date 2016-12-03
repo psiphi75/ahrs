@@ -131,7 +131,7 @@ module.exports = function Madgwick(sampleInterval, options) {
         var q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
 
         // Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
-        if (mx === undefined || my === undefined || mz === undefined) {
+        if (mx === undefined || my === undefined || mz === undefined || (mx === 0 && my === 0 && mz === 0)) {
             madgwickAHRSupdateIMU(gx, gy, gz, ax, ay, az);
             return;
         }
@@ -143,7 +143,7 @@ module.exports = function Madgwick(sampleInterval, options) {
         qDot4 = 0.5 * (q0 * gz + q1 * gy - q2 * gx);
 
         // Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
-        if (ax !== 0 && ay !== 0 && az !== 0) {
+        if (!((ax === 0.0) && (ay === 0.0) && (az === 0.0))) {
 
             // Normalise accelerometer measurement
             recipNorm = Math.pow(ax * ax + ay * ay + az * az, -0.5);

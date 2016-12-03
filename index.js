@@ -23,6 +23,8 @@
 
 'use strict';
 
+var rad2deg = 180 / Math.PI;
+
 function AHRS(options) {
     options = options || {};
     var sampleInterval = options.sampleInterval || 20;
@@ -82,6 +84,27 @@ AHRS.prototype.getEulerAngles = function() {
         heading: Math.atan2(2 * (q.x * q.y + q.z * q.w), xx - yy - zz + ww),
         pitch: -Math.asin(2 * (q.x * q.z - q.y * q.w)),
         roll: Math.atan2(2 * (q.y * q.z + q.x * q.w), -xx - yy + zz + ww)
+    };
+};
+
+/**
+ * Return an object with the Euler angles {heading, pitch, roll}, in radians.
+ *
+ * Where:
+ *   - heading is from magnetic north, going west (about z-axis).
+ *   - pitch is from vertical, going forward (about y-axis).
+ *   - roll is from vertical, going right (about x-axis).
+ *
+ * Thanks to:
+ *   https://github.com/PenguPilot/PenguPilot/blob/master/autopilot/service/util/math/quat.c#L103
+ * @return {object} {heading, pitch, roll} in radians
+ */
+AHRS.prototype.getEulerAnglesDegrees = function() {
+    var getEulerAnglesRad = this.getEulerAngles();
+    return {
+        heading: getEulerAnglesRad.heading * rad2deg,
+        pitch: getEulerAnglesRad.pitch * rad2deg,
+        roll: getEulerAnglesRad.roll * rad2deg
     };
 };
 
