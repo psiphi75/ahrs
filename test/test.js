@@ -23,8 +23,8 @@
 
 'use strict';
 
-var DEBUG = true;
-var compareWithAndWithoutMagnetometer = true;
+var DEBUG = false;
+var compareWithAndWithoutMagnetometer = false;
 
 var sampleInterval = 10;
 var thresholdDegrees = 2.5;
