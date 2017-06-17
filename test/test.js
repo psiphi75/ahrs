@@ -23,7 +23,9 @@
 
 'use strict';
 
-var DEBUG = false;
+var DEBUG = true;
+var compareWithAndWithoutMagnetometer = true;
+
 var sampleInterval = 10;
 var thresholdDegrees = 2.5;
 var headingAngleDegrees = -40;
@@ -36,19 +38,21 @@ var data_pitch_move = xformTestData(require('./test-data-pitch-move'));
 
 testIt('Random move and return', 'Madgwick', data_random_move, true);
 testIt('Random move and return', 'Madgwick', data_random_move, 0.0);
-testIt('Random move and return', 'Madgwick', data_random_move, undefined);
+if (!compareWithAndWithoutMagnetometer) {
+    testIt('Random move and return', 'Madgwick', data_random_move, undefined);
 
-testIt('Random move and return', 'Mahony', data_random_move, true);
-testIt('Random move and return', 'Mahony', data_random_move, 0.0);
-testIt('Random move and return', 'Mahony', data_random_move, undefined);
+    testIt('Random move and return', 'Mahony', data_random_move, true);
+    testIt('Random move and return', 'Mahony', data_random_move, 0.0);
+    testIt('Random move and return', 'Mahony', data_random_move, undefined);
 
-testIt('Random move and return', 'Madgwick', data_pitch_move, true);
-testIt('Random move and return', 'Madgwick', data_pitch_move, 0.0);
-testIt('Random move and return', 'Madgwick', data_pitch_move, undefined);
+    testIt('Random move and return', 'Madgwick', data_pitch_move, true);
+    testIt('Random move and return', 'Madgwick', data_pitch_move, 0.0);
+    testIt('Random move and return', 'Madgwick', data_pitch_move, undefined);
 
-testIt('Random move and return', 'Mahony', data_pitch_move, true);
-testIt('Random move and return', 'Mahony', data_pitch_move, 0.0);
-testIt('Random move and return', 'Mahony', data_pitch_move, undefined);
+    testIt('Random move and return', 'Mahony', data_pitch_move, true);
+    testIt('Random move and return', 'Mahony', data_pitch_move, 0.0);
+    testIt('Random move and return', 'Mahony', data_pitch_move, undefined);
+}
 
 
 function testIt(name, algorithm, data, include_mag) {
@@ -116,6 +120,7 @@ function runTest(imu_data, algorithm, include_mag) {
     };
     var ahrs = new AHRS(ahrsOptions);
 
+    var firstHeading;
     return imu_data.map(function(d, i) {
         var compass;
         if (include_mag === undefined) {
@@ -136,7 +141,10 @@ function runTest(imu_data, algorithm, include_mag) {
         } else if (DEBUG && i >= 30) {
             // 1st 10 items are choppy
             t += d.dt;
-            console.log(i + '\t', t.toFixed(3) + '\t', eulerDeg.heading.toFixed(1) + '\t', eulerDeg.pitch.toFixed(1) + '\t', eulerDeg.roll.toFixed(1));
+            if (firstHeading === undefined) {
+                firstHeading = eulerDeg.heading;
+            }
+            console.log(i + '\t', t.toFixed(3) + '\t', (eulerDeg.heading - firstHeading).toFixed(1) + '\t', eulerDeg.pitch.toFixed(1) + '\t', eulerDeg.roll.toFixed(1));
         }
         return eulerDeg;
     });
