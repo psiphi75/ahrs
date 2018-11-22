@@ -1,0 +1,48 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "script"
+  },
+  "extends": "airbnb-base",
+  "plugins": ["jsdoc", "prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "linebreak-style": ["error", "unix"],
+    "strict": "off",
+    "no-mixed-operators": "off",
+    "max-len": "off",
+    "object-curly-newline": "off",
+    "arrow-parens": "off",
+    "function-paren-newline": "off",
+    "wrap-iife": "off",
+    "no-param-reassign": "off",
+    "consistent-return": "off",
+    "comma-dangle": "off",
+    "quotes": ["error", "single"],
+    "space-before-function-paren": "off",
+    "import/no-unresolved": "off",
+    "one-var": "off",
+    "implicit-arrow-linebreak": "off",
+    "no-else-return": "off",
+    "global-require": "off",
+    "no-console": "off",
+    "operator-linebreak": "off",
+
+    "jsdoc/check-param-names": 1,
+    "jsdoc/check-tag-names": 1,
+    "jsdoc/check-types": 1,
+    "jsdoc/newline-after-description": 1,
+    "jsdoc/require-description-complete-sentence": 1,
+    "jsdoc/require-example": 0,
+    "jsdoc/require-hyphen-before-param-description": 1,
+    "jsdoc/require-param": 1,
+    "jsdoc/require-param-description": 1,
+    "jsdoc/require-param-name": 1,
+    "jsdoc/require-param-type": 1,
+    "jsdoc/require-returns-description": 1,
+    "jsdoc/require-returns-type": 1
+  }
+}

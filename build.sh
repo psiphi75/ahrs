@@ -8,10 +8,11 @@ TARGET="www-ahrs.js"
 SRC_DIR="."
 WWW_DIR="./build"
 
-BRSFY=`which browserify`
+BRSFY="./node_modules/.bin/browserify"
 
-if [ "${BRSFY}" = "" ]; then
-    echo "Please install browserify globally (npm install -g browserify)."
+if [ ! -f "${BRSFY}" ]; then
+    echo "Please install browserify."
+    exit -1
 fi
 
 # Build www-ahrs

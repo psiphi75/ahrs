@@ -1,6 +1,6 @@
 {
   "name": "ahrs",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "AHRS (Attitude Heading Reference Systems) calculation for JavaScript",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "url": "https://github.com/psiphi75/ahrs/issues"
   },
   "devDependencies": {
-    "tape": "^4.6.3"
+    "browserify": "^16.2.3",
+    "tape": "^4.9.1"
   }
 }
