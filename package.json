@@ -32,5 +32,6 @@
   "devDependencies": {
     "browserify": "^16.2.3",
     "tape": "^4.9.1"
-  }
+  },
+  "types": "./index.d.ts"
 }
