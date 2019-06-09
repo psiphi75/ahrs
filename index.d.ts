@@ -40,9 +40,9 @@ declare module 'ahrs' {
       ax: number,
       ay: number,
       az: number,
-      mx: number,
-      my: number,
-      mz: number,
+      mx?: number,
+      my?: number,
+      mz?: number,
       deltaTimeSec?: number
     ) => void;
 
