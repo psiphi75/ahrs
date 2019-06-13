@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cd test; node test.js",
-    "prepublish": "./build.sh"
+    "prepublishOnly": "./build.sh"
   },
   "repository": {
     "type": "git",
