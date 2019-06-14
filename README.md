@@ -70,7 +70,7 @@ Use the `/build/www-ahrs.js` file in the browser. The rest will work just like i
 
 ## Functions
 
-### `update(gx, gy, gz, ax, ay, az, [mx, my, mz, deltaTimeSec])`
+`update(gx, gy, gz, ax, ay, az, [mx, my, mz, deltaTimeSec])`
 
 Update the AHRS filter with up-to-date, unfiltered values from the gyroscope (gx, gy, gz), the accelerometer (ax, ay, az), optionally the magnetometer (mx, my, mz) and
 optionally the elapsed time (in seconds) since the last reading. The magnetometer
@@ -84,19 +84,19 @@ _Units_:
 
 _returns:_ nothing.
 
-### `getQuaternion()`
+`getQuaternion()`
 
 This returns the quaternion for the current estimated attitude.
 
 _returns:_ Object with quaternion components x, y, z, w.
 
-### `toVector()`
+`toVector()`
 
 Convert the quaternion to a vector with angle.
 
 _returns:_ Object with normalised vector with components x, y, z, and angle.
 
-### `getEulerAngles()`
+`getEulerAngles()`
 
 Return an object with the Euler angles (heading/yaw, pitch, roll), in radians.
 
@@ -111,13 +111,13 @@ _returns:_ Object where:
 Getting the AHRS working well you need to make sure the values you provide the algorithm are sensible. Simple mistakes can
 easily lead to incorrect results.
 
-1. Get your axes correct
+### 1. Get your axes correct
 
 The most important thing is to get your axis correct. Read the documentation of your device. Some devices (like the MPU9250)
 have the accelerometer and compass with a different orientation than the magnetometer. You will need to rotate the axis
 before you use the values for the AHRS algorithm.
 
-2. Units
+### 2. Units
 
 Ensure the input units are correct.
 
@@ -129,18 +129,18 @@ The accelerometer units are in g, see [G-Force](https://en.wikipedia.org/wiki/G-
 axis vertical, then the value along that axis should be around +/- 1.0, the other axes' values should hover around 0.0, since they
 are perpendicular to the force of gravity.
 
-3. Sample rate
+### 3. Sample rate
 
 Make sure you have selected the correct `sampleInterval`. The sample interval is the inverse of the sample rate. For example a
 `sampleInterval` of `20` is equivalent of a sample rate of 0.05 (seconds between each sample), or 50 milliseconds. Ensure that
 the documented sample rate is the same as the actual sample rate.
 
-4. Magnetometer
+### 4. Magnetometer
 
 The magnetometer (or compass) is very sensitive, if you have nearby magnetic or ferrous objects, this can distort the magnetic
 field significantly. For instance the following can distort the magnetometer: a wooden bench with steel framing, being inside a building with steel framing, nearby magnets, nearby high current devices, etc.
 
-5. Calibration
+### 5. Calibration
 
 Calibration should be the final step. It is unlikely this step will fix issues with your device. Calibration removes bias
 from the signal.
