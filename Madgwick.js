@@ -28,7 +28,8 @@ module.exports = function Madgwick(sampleInterval, options) {
 
   options = options || {};
   const sampleFreq = 1000 / sampleInterval; // sample frequency in Hz
-  const beta = options.beta || 1.0; // 2 * proportional gain - lower numbers are smoother, but take longer to get to correct attitude.
+  let beta = options.beta || 1.0; // 2 * proportional gain - lower numbers are smoother, but take longer to get to correct attitude.
+  let initalised = options.doInitialisation === true ? false : true;
 
   //---------------------------------------------------------------------------------------------------
   // Variable definitions
@@ -43,7 +44,7 @@ module.exports = function Madgwick(sampleInterval, options) {
 
   //---------------------------------------------------------------------------------------------------
   // IMU algorithm update
-  function madgwickAHRSupdateIMU(gx, gy, gz, ax, ay, az) {
+  function madgwickAHRSUpdateIMU(gx, gy, gz, ax, ay, az) {
     let recipNorm;
     let s0, s1, s2, s3;
     let qDot1, qDot2, qDot3, qDot4;
@@ -111,10 +112,27 @@ module.exports = function Madgwick(sampleInterval, options) {
   }
 
   //---------------------------------------------------------------------------------------------------
+  // Brute force the initialisation of the q values
+  function doBruteForceInitialisation(ax, ay, az, mx, my, mz) {
+    initalised = true;
+    const betaOrig = beta;
+    beta = 0.4;
+    for (let i = 0; i <= 9; i += 1) {
+      madgwickAHRSUpdate(0.0, 0.0, 0.0, ax, ay, az, mx, my, mz, 1.0);
+    }
+    beta = betaOrig;
+  }
+
+  //---------------------------------------------------------------------------------------------------
   // AHRS algorithm update
 
-  function madgwickAHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz, deltaTimeSec) {
+  function madgwickAHRSUpdate(gx, gy, gz, ax, ay, az, mx, my, mz, deltaTimeSec) {
     recipSampleFreq = deltaTimeSec || recipSampleFreq;
+
+    if (!initalised) {
+      doBruteForceInitialisation(ax, ay, az, mx, my, mz);
+    }
+
     let recipNorm;
     let s0, s1, s2, s3;
     let qDot1, qDot2, qDot3, qDot4;
@@ -124,7 +142,7 @@ module.exports = function Madgwick(sampleInterval, options) {
 
     // Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
     if (mx === undefined || my === undefined || mz === undefined || (mx === 0 && my === 0 && mz === 0)) {
-      madgwickAHRSupdateIMU(gx, gy, gz, ax, ay, az);
+      madgwickAHRSUpdateIMU(gx, gy, gz, ax, ay, az);
       return;
     }
 
@@ -233,7 +251,7 @@ module.exports = function Madgwick(sampleInterval, options) {
   }
 
   return {
-    update: madgwickAHRSupdate,
+    update: madgwickAHRSUpdate,
     getQuaternion() {
       return {
         w: q0,

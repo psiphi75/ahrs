@@ -40,7 +40,7 @@ function AHRS(options) {
   }
   const algorithmFn = Req(sampleInterval, options);
 
-  // Copy all properties accross
+  // Copy all properties across
   const self = this;
   Object.keys(algorithmFn).forEach(prop => {
     console.log(prop);

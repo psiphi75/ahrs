@@ -6,12 +6,14 @@ declare module 'ahrs' {
       beta,
       kp,
       ki,
+      doInitialisation,
     }: {
       sampleInterval?: number;
       algorithm?: 'Madgwick' | 'Mahony';
       beta?: number;
       kp?: number;
       ki?: number;
+      doInitialisation?: boolean;
     });
 
     public toVector: () => {

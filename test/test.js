@@ -55,6 +55,7 @@ function isNear(expected, range, actual) {
 
 function runTest(imuData, algorithm, includeMag) {
   let t = 0;
+  // @ts-ignore
   const AHRS = require('../index');
   const ahrsOptions = {
     sampleInterval,
@@ -100,7 +101,7 @@ function runTest(imuData, algorithm, includeMag) {
 
 function testIt(name, algorithm, data, includeMag) {
   const withMag = includeMag ? 'turned ON' : `set to ${includeMag}`;
-  name = `\n${name} using "${algorithm}" and magnetomer ${withMag}`;
+  name = `\n${name} using "${algorithm}" and magnetometer ${withMag}`;
 
   test(name, t => {
     const result = runTest(dataRandomMove, algorithm, includeMag);
@@ -108,14 +109,14 @@ function testIt(name, algorithm, data, includeMag) {
     const resultNearStart = result[30];
     const resultNearEnd = result[result.length - 30];
 
-    // If we dont' include the magnetomer (compass), then the default heading
+    // If we don't include the magnetometer (compass), then the default heading
     // will be 0 degrees.
     const expectedHeadingAngle = includeMag ? headingAngleDegrees : 0;
 
     t.equal(isNear(expectedHeadingAngle, thresholdDegrees, resultNearStart.heading), 'pass', 'heading starts ok');
 
     if (algorithm === 'Mahony') {
-      console.log('Mahony has trouble with heading when magnetomer (compass) is disabled - test disabled');
+      console.log('Mahony has trouble with heading when magnetometer (compass) is disabled - test disabled');
     } else {
       t.equal(isNear(expectedHeadingAngle, thresholdDegrees, resultNearEnd.heading), 'pass', 'heading ends ok');
     }

@@ -30,15 +30,14 @@ module.exports = function Mahony(sampleInterval, options) {
   const ki = options.ki || 0.0;
 
   const sampleFreq = 1000 / sampleInterval; // sample frequency in Hz
-  const twoKpDef = 2.0 * kp; // 2 * proportional gain
-  const twoKiDef = 2.0 * ki; // 2 * integral gain
   let recipSampleFreq = 1 / sampleFreq;
+  let initalised = options.doInitialisation === true ? false : true;
 
   //---------------------------------------------------------------------------------------------------
   // Variable definitions
 
-  const twoKp = twoKpDef; // 2 * proportional gain (Kp)
-  const twoKi = twoKiDef; // 2 * integral gain (Ki)
+  let twoKp = 2.0 * kp; // 2 * proportional gain (Kp)
+  const twoKi = 2.0 * ki; // 2 * integral gain (Ki)
   let q0 = 1.0,
     q1 = 0.0,
     q2 = 0.0,
@@ -54,12 +53,12 @@ module.exports = function Mahony(sampleInterval, options) {
   // IMU algorithm update
   //
 
-  function mahonyAHRSupdateIMU(gx, gy, gz, ax, ay, az) {
+  function mahonyAHRSUpdateIMU(gx, gy, gz, ax, ay, az) {
     let recipNorm;
     let halfvx, halfvy, halfvz;
     let halfex, halfey, halfez;
 
-    // Compute feedback only if accelerometer measurement valid (afunctions NaN in accelerometer normalisation)
+    // Compute feedback only if accelerometer measurement valid (NaN in accelerometer normalisation)
     if (ax !== 0 && ay !== 0 && az !== 0) {
       // Normalise accelerometer measurement
       recipNorm = (ax * ax + ay * ay + az * az) ** -0.5;
@@ -116,13 +115,30 @@ module.exports = function Mahony(sampleInterval, options) {
     q3 *= recipNorm;
   }
 
+  //---------------------------------------------------------------------------------------------------
+  // Brute force the initialisation of the q values
+  function doBruteForceInitialisation(ax, ay, az, mx, my, mz) {
+    initalised = true;
+    const twoKpOrig = twoKp;
+    twoKp = 2.5;
+    for (let i = 0; i <= 9; i += 1) {
+      mahonyAHRSUpdate(0.0, 0.0, 0.0, ax, ay, az, mx, my, mz, 1.0);
+    }
+    twoKp = twoKpOrig;
+  }
+
   //
   //---------------------------------------------------------------------------------------------------
   // AHRS algorithm update
   //
 
-  function mahonyAHRSupdate(gx, gy, gz, ax, ay, az, mx, my, mz, deltaTimeSec) {
+  function mahonyAHRSUpdate(gx, gy, gz, ax, ay, az, mx, my, mz, deltaTimeSec) {
     recipSampleFreq = deltaTimeSec || recipSampleFreq;
+
+    if (!initalised) {
+      doBruteForceInitialisation(ax, ay, az, mx, my, mz);
+    }
+
     let recipNorm;
     let q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
     let hx, hy, bx, bz;
@@ -131,11 +147,11 @@ module.exports = function Mahony(sampleInterval, options) {
 
     // Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
     if (mx === undefined || my === undefined || mz === undefined || (mx === 0 && my === 0 && mz === 0)) {
-      mahonyAHRSupdateIMU(gx, gy, gz, ax, ay, az);
+      mahonyAHRSUpdateIMU(gx, gy, gz, ax, ay, az);
       return;
     }
 
-    // Compute feedback only if accelerometer measurement valid (afunctions NaN in accelerometer normalisation)
+    // Compute feedback only if accelerometer measurement valid (NaN in accelerometer normalisation)
     if (ax !== 0 && ay !== 0 && az !== 0) {
       // Normalise accelerometer measurement
       recipNorm = (ax * ax + ay * ay + az * az) ** -0.5;
@@ -149,7 +165,7 @@ module.exports = function Mahony(sampleInterval, options) {
       my *= recipNorm;
       mz *= recipNorm;
 
-      // Auxiliary variables to afunction repeated arithmetic
+      // Auxiliary variables to repeated arithmetic
       q0q0 = q0 * q0;
       q0q1 = q0 * q1;
       q0q2 = q0 * q2;
@@ -221,7 +237,7 @@ module.exports = function Mahony(sampleInterval, options) {
   }
 
   return {
-    update: mahonyAHRSupdate,
+    update: mahonyAHRSUpdate,
     getQuaternion() {
       return {
         w: q0,

@@ -2,18 +2,22 @@
 
 AHRS (Attitude Heading Reference Systems) calculation for JavaScript. This will calculate the attitude and heading for a device with all of the following sensors: compass, gyroscope and accelerometer. The Madgwick or Mahony algorithms can be used to filter data in real time from these sensors.
 
-## Usage:
+## Usage
 
 ```javascript
 const AHRS = require('ahrs');
 const madgwick = new AHRS({
   /*
    * The sample interval, in Hz.
+   *
+   * Default: 20
    */
   sampleInterval: 20,
 
   /*
    * Choose from the `Madgwick` or `Mahony` filter.
+   *
+   * Default: 'Madgwick'
    */
   algorithm: 'Madgwick',
 
@@ -21,14 +25,29 @@ const madgwick = new AHRS({
    * The filter noise value, smaller values have
    * smoother estimates, but have higher latency.
    * This only works for the `Madgwick` filter.
+   *
+   * Default: 0.4
    */
   beta: 0.4,
 
   /*
    * The filter noise values for the `Mahony` filter.
    */
-  kp: 0.5,
-  ki: 0,
+  kp: 0.5, // Default: 0.5
+  ki: 0, // Default: 0.0
+
+  /*
+   * When the AHRS algorithm runs for the first time and this value is
+   * set to true, then a brute force initialisation is done.  This means
+   * that the AHRS is run 10 times with the initial value to force a stable
+   * outcome.
+   *
+   * Note: this feature is 'beta'.  Use it with caution and only after the rest
+   * of your code is running fine.
+   *
+   * Default: false
+   */
+  doInitialisation: false,
 });
 
 madgwick.update(gyro.x, gyro.y, gyro.z, accel.x, accel.y, accel.z, compass.x, compass.y, compass.z);
