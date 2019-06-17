@@ -569,10 +569,7 @@ function AHRS(options) {
 
   // Copy all properties across
   const self = this;
-  Object.keys(algorithmFn).forEach(prop => {
-    console.log(prop);
-    self[prop] = algorithmFn[prop];
-  });
+  Object.keys(algorithmFn).forEach(prop => self[prop] = algorithmFn[prop]);
 }
 
 /**
