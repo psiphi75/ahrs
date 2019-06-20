@@ -68,6 +68,13 @@ The log output of the above will look like the following:
 
 Use the `/build/www-ahrs.js` file in the browser. The rest will work just like in Node.js.
 
+## Orientation
+
+The image below shows the orientation of the axis. The x-axis points north and the z-axis up. The input values
+should be rotated to match the orientation show. The output will be of the shown orientation.
+
+![Orientation of x, y, and z axes, showing pitch, roll and heading](doc/orientation.png 'Orientation')
+
 ## Functions
 
 `update(gx, gy, gz, ax, ay, az, [mx, my, mz, deltaTimeSec])`
