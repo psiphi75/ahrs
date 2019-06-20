@@ -1,6 +1,6 @@
 # AHRS
 
-AHRS (Attitude Heading Reference Systems) calculation for JavaScript. This will calculate the attitude and heading for a device with all of the following sensors: compass, gyroscope and accelerometer. The Madgwick or Mahony algorithms can be used to filter data in real time from these sensors.
+AHRS (Attitude Heading Reference Systems) calculation for JavaScript, or sensor fusion as some people call it. This will calculate the attitude and heading for a device with all of the following sensors: compass, gyroscope and accelerometer. The Madgwick or Mahony algorithms can be used to filter data in real time from these sensors.
 
 ## Usage
 
