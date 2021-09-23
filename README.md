@@ -38,12 +38,7 @@ const madgwick = new AHRS({
 
   /*
    * When the AHRS algorithm runs for the first time and this value is
-   * set to true, then a brute force initialisation is done.  This means
-   * that the AHRS is run 10 times with the initial value to force a stable
-   * outcome.
-   *
-   * Note: this feature is 'beta'.  Use it with caution and only after the rest
-   * of your code is running fine.
+   * set to true, then initialisation is done.
    *
    * Default: false
    */
@@ -113,6 +108,15 @@ _returns:_ Object where:
 - pitch is from vertical, going forward (about y-axis).
 - roll is from vertical, going right (about x-axis).
 
+`init(ax, ay, az, mx, my, mz)`
+
+Initalise the internal quaternion values.  This function only needs to be
+called once at the beginning.  The attitude will be set by the accelometer
+and the heading by the magnetometer.  If the `doInitialisation` property is
+is set to `true` then this function is not requried.
+
+_returns:_ Object with quaternion components x, y, z, w.
+
 ## Debugging
 
 Getting the AHRS working well you need to make sure the values you provide the algorithm are sensible. Simple mistakes can
@@ -155,7 +159,3 @@ from the signal.
 Some devices, like mobile phones, will provide a raw value or a calibrated value. Either raw or calibrated values are fine to use.
 However, don't use values that have already been passed through a more complex filter, like the AHRS filters this package
 uses. Adding more filters does not help.
-
-## TODO:
-
-- Currently the quaternion is not initialised, this means there may be one to two seconds before the correct attitude is obtained.
