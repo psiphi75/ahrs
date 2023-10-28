@@ -1,6 +1,6 @@
 {
   "name": "ahrs",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "AHRS (Attitude Heading Reference Systems) calculation for JavaScript",
   "main": "index.js",
   "scripts": {
